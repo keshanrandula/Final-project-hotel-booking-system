@@ -16,8 +16,22 @@ import RoomManage from "./hotelstaff/RoomManage";
 import HotelRoom from "./HotelRoom";
 import Booking from "./Booking";
 import EditHotelProfile from "./hotelstaff/EditHotelProfile";
-
-
+import UserProfile from "./profile";
+import Home from "./Home";  
+import Contact from "./Contact";  
+import AdminRegister from "./Admin/AdminRegister";  
+import AdminLogin from "./Admin/AdminLogin";  
+import AdminRoomManage from "./Admin/AdminRoomMAnage";
+import AdminDashboard from "./Admin/AdminDashboard";
+import UserHotels from "./UserHotels";
+import UserRooms from "./UserRooms";
+import AvailableRooms from "./AvailableRooms";
+import AdminBooking from "./Admin/AdminBooking";
+import check from "./check";  
+import Feedback from "./Feedback";
+import AdminManageFeedback from "./Admin/AdminManageFeedback";
+import MyBookings from "./MyBookings";
+  
 
 
 
@@ -45,6 +59,23 @@ function App() {
         <Route path="/hotelroom" element={<HotelRoom />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/edithotelprofile" element={<EditHotelProfile />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<Contact />} />
+          <Route path="/admin/roommanage" element={<AdminRoomManage />} />
+
+        <Route path="/admin/register" element={<AdminRegister />} />
+        <Route path="/admin/login" element={<AdminLogin />} />  
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/userhotels" element={<UserHotels />} />
+         <Route path="/userhotels/:id/rooms" element={<UserRooms />} />
+          <Route path="/availablerooms" element={<AvailableRooms />} />
+          <Route path="/admin/bookings" element={<AdminBooking />} />
+          <Route path="/check" element={<check />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/admin/managefeedback" element={<AdminManageFeedback />} />
+          <Route path="/mybookings" element={<MyBookings />} />
+ 
        
         
        

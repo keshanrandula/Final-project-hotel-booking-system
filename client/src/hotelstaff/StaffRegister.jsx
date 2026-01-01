@@ -74,7 +74,7 @@ export default function RegisterStaff() {
       <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
       <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="Password" />
 
-      {/* 🔥 Dropdown for hotel */}
+      {/*Dropdown for hotel */}
       <select name="hotel" value={form.hotel} onChange={handleChange} required>
         <option value="">Select Hotel</option>
         {hotels.map((hotel) => (

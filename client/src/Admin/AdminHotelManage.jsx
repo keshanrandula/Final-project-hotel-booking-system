@@ -1,652 +1,558 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import {
+  Container,
+  Typography,
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Chip,
+  Avatar,
+  Grid,
+  Alert,
+  Snackbar,
+  CircularProgress,
+  Card,
+  CardContent,
+  CardMedia,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import {
+  Edit,
+  Delete,
+  Add,
+  Hotel,
+  LocationOn,
+  Email,
+  Visibility,
+  Close
+} from '@mui/icons-material';
 
-// export default function AdminHotelManage() {
-//   const [hotels, setHotels] = useState([]);
-//   const [editingHotel, setEditingHotel] = useState(null);
-//   const [form, setForm] = useState({
-//     name: "",
-//     description: "",
-//     location: "",
-//     pricePerNight: "",
-//     amenities: "",
-//   });
-//   const [loading, setLoading] = useState(false);
-//   const [message, setMessage] = useState("");
-
-//   // Fetch all hotels
-//   const fetchHotels = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await axios.get("http://localhost:5000/api/hotels");
-//       setHotels(response.data);
-//     } catch (error) {
-//       console.error("Error fetching hotels:", error);
-//       setMessage("Error fetching hotels");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchHotels();
-//   }, []);
-
-//   // Handle input changes for edit form
-//   const handleChange = (e) => {
-//     setForm({ ...form, [e.target.name]: e.target.value });
-//   };
-
-//   // Set hotel for editing
-//   const handleEdit = (hotel) => {
-//     setEditingHotel(hotel);
-//     setForm({
-//       name: hotel.name,
-//       description: hotel.description,
-//       location: hotel.location,
-//       pricePerNight: hotel.pricePerNight,
-//       amenities: hotel.amenities.join(","),
-//     });
-//   };
-
-//   // Cancel editing
-//   const handleCancelEdit = () => {
-//     setEditingHotel(null);
-//     setForm({
-//       name: "",
-//       description: "",
-//       location: "",
-//       pricePerNight: "",
-//       amenities: "",
-//     });
-//   };
-
-//   // Update hotel
-//   const handleUpdate = async (e) => {
-//     e.preventDefault();
-//     try {
-//       setLoading(true);
-//       await axios.put(
-//         `http://localhost:5000/api/hotels/${editingHotel._id}`,
-//         form
-//       );
-      
-//       setMessage("Hotel updated successfully!");
-//       setEditingHotel(null);
-//       setForm({
-//         name: "",
-//         description: "",
-//         location: "",
-//         pricePerNight: "",
-//         amenities: "",
-//       });
-//       fetchHotels(); // Refresh the list
-//     } catch (error) {
-//       console.error("Error updating hotel:", error);
-//       setMessage("Error updating hotel");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // Delete hotel
-//   const handleDelete = async (hotelId) => {
-//     if (!window.confirm("Are you sure you want to delete this hotel?")) {
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-//       await axios.delete(`http://localhost:5000/api/hotels/${hotelId}`);
-//       setMessage("Hotel deleted successfully!");
-//       fetchHotels(); // Refresh the list
-//     } catch (error) {
-//       console.error("Error deleting hotel:", error);
-//       setMessage("Error deleting hotel");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 p-6">
-//       <div className="max-w-7xl mx-auto">
-//         <h1 className="text-3xl font-bold text-gray-800 mb-8">
-//           Hotel Management
-//         </h1>
-
-//         {message && (
-//           <div
-//             className={`mb-6 p-4 rounded-lg ${
-//               message.includes("Error")
-//                 ? "bg-red-100 text-red-700"
-//                 : "bg-green-100 text-green-700"
-//             }`}
-//           >
-//             {message}
-//             <button
-//               onClick={() => setMessage("")}
-//               className="float-right font-bold"
-//             >
-//               ×
-//             </button>
-//           </div>
-//         )}
-
-//         {/* Edit Form */}
-//         {editingHotel && (
-//           <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-//             <h2 className="text-2xl font-bold mb-4 text-gray-800">
-//               Edit Hotel
-//             </h2>
-//             <form onSubmit={handleUpdate} className="space-y-4">
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                 <div>
-//                   <label className="block text-gray-700 mb-2">Name</label>
-//                   <input
-//                     type="text"
-//                     name="name"
-//                     value={form.name}
-//                     onChange={handleChange}
-//                     required
-//                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-//                   />
-//                 </div>
-//                 <div>
-//                   <label className="block text-gray-700 mb-2">Location</label>
-//                   <input
-//                     type="text"
-//                     name="location"
-//                     value={form.location}
-//                     onChange={handleChange}
-//                     required
-//                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-//                   />
-//                 </div>
-//               </div>
-
-//               <div>
-//                 <label className="block text-gray-700 mb-2">Description</label>
-//                 <textarea
-//                   name="description"
-//                   value={form.description}
-//                   onChange={handleChange}
-//                   rows="3"
-//                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-//                 />
-//               </div>
-
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                 <div>
-//                   <label className="block text-gray-700 mb-2">
-//                     Price Per Night
-//                   </label>
-//                   <input
-//                     type="number"
-//                     name="pricePerNight"
-//                     value={form.pricePerNight}
-//                     onChange={handleChange}
-//                     required
-//                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-//                   />
-//                 </div>
-//                 <div>
-//                   <label className="block text-gray-700 mb-2">
-//                     Amenities (comma separated)
-//                   </label>
-//                   <input
-//                     type="text"
-//                     name="amenities"
-//                     value={form.amenities}
-//                     onChange={handleChange}
-//                     placeholder="WiFi, Pool, Spa, Gym"
-//                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-//                   />
-//                 </div>
-//               </div>
-
-//               <div className="flex gap-4">
-//                 <button
-//                   type="submit"
-//                   disabled={loading}
-//                   className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
-//                 >
-//                   {loading ? "Updating..." : "Update Hotel"}
-//                 </button>
-//                 <button
-//                   type="button"
-//                   onClick={handleCancelEdit}
-//                   className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition"
-//                 >
-//                   Cancel
-//                 </button>
-//               </div>
-//             </form>
-//           </div>
-//         )}
-
-//         {/* Hotels List */}
-//         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-//           <div className="px-6 py-4 border-b">
-//             <h2 className="text-xl font-semibold text-gray-800">
-//               All Hotels ({hotels.length})
-//             </h2>
-//           </div>
-
-//           {loading && !editingHotel ? (
-//             <div className="p-8 text-center">
-//               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-//               <p className="mt-2 text-gray-600">Loading hotels...</p>
-//             </div>
-//           ) : hotels.length === 0 ? (
-//             <div className="p-8 text-center text-gray-500">
-//               No hotels found. Add some hotels to get started.
-//             </div>
-//           ) : (
-//             <div className="overflow-x-auto">
-//               <table className="w-full">
-//                 <thead className="bg-gray-50">
-//                   <tr>
-//                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                       Hotel
-//                     </th>
-//                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                       Location
-//                     </th>
-//                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                       Price
-//                     </th>
-//                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                       Amenities
-//                     </th>
-//                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                       Actions
-//                     </th>
-//                   </tr>
-//                 </thead>
-//                 <tbody className="bg-white divide-y divide-gray-200">
-//                   {hotels.map((hotel) => (
-//                     <tr key={hotel._id} className="hover:bg-gray-50">
-//                       <td className="px-6 py-4 whitespace-nowrap">
-//                         <div className="flex items-center">
-//                           {hotel.images && hotel.images.length > 0 && (
-//                             <img
-//                               src={hotel.images[0]}
-//                               alt={hotel.name}
-//                               className="h-10 w-10 rounded-lg object-cover mr-3"
-//                             />
-//                           )}
-//                           <div>
-//                             <div className="text-sm font-medium text-gray-900">
-//                               {hotel.name}
-//                             </div>
-//                             <div className="text-sm text-gray-500 line-clamp-1">
-//                               {hotel.description}
-//                             </div>
-//                           </div>
-//                         </div>
-//                       </td>
-//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                         {hotel.location}
-//                       </td>
-//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                         ${hotel.pricePerNight}
-//                       </td>
-//                       <td className="px-6 py-4 text-sm text-gray-500">
-//                         <div className="flex flex-wrap gap-1">
-//                           {hotel.amenities.slice(0, 3).map((amenity, index) => (
-//                             <span
-//                               key={index}
-//                               className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"
-//                             >
-//                               {amenity}
-//                             </span>
-//                           ))}
-//                           {hotel.amenities.length > 3 && (
-//                             <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-//                               +{hotel.amenities.length - 3} more
-//                             </span>
-//                           )}
-//                         </div>
-//                       </td>
-//                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-//                         <div className="flex gap-2">
-//                           <button
-//                             onClick={() => handleEdit(hotel)}
-//                             className="text-blue-600 hover:text-blue-900 transition"
-//                           >
-//                             Edit
-//                           </button>
-//                           <button
-//                             onClick={() => handleDelete(hotel._id)}
-//                             className="text-red-600 hover:text-red-900 transition"
-//                           >
-//                             Delete
-//                           </button>
-//                         </div>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-/////////////////////////
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-
-export default function AdminHotelManage() {
+const AdminHotelManage = () => {
   const [hotels, setHotels] = useState([]);
-  const [editingHotel, setEditingHotel] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    location: "",
-    amenities: "",
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
+  const [selectedHotel, setSelectedHotel] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    location: '',
+    email: '',
+    amenities: '',
+    password: ''
   });
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [images, setImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
 
-  // Fetch all hotels
-  const fetchHotels = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/hotels");
-      setHotels(response.data);
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-      setMessage("Error fetching hotels");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const API_URL = 'http://localhost:5000/api/hotels';
 
   useEffect(() => {
     fetchHotels();
   }, []);
 
-  // Handle input changes
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const fetchHotels = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.get(`${API_URL}/admin/all`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setHotels(response.data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to fetch hotels');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Set hotel for editing
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+    
+    const previews = files.map(file => URL.createObjectURL(file));
+    setPreviewImages(previews);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('adminToken');
+      const formDataToSend = new FormData();
+      
+      Object.keys(formData).forEach(key => {
+        if (formData[key]) formDataToSend.append(key, formData[key]);
+      });
+      
+      images.forEach(image => {
+        formDataToSend.append('images', image);
+      });
+
+      if (selectedHotel) {
+        // Update existing hotel
+        await axios.put(`${API_URL}/admin/${selectedHotel._id}`, formDataToSend, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        setSuccess('Hotel updated successfully!');
+      } else {
+        // Add new hotel
+        await axios.post(`${API_URL}/add`, formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        setSuccess('Hotel added successfully!');
+      }
+
+      setOpenDialog(false);
+      resetForm();
+      fetchHotels();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Operation failed');
+    }
+  };
+
   const handleEdit = (hotel) => {
-    setEditingHotel(hotel);
-    setForm({
+    setSelectedHotel(hotel);
+    setFormData({
       name: hotel.name,
       description: hotel.description,
       location: hotel.location,
-      amenities: hotel.amenities.join(","),
+      email: hotel.email,
+      amenities: hotel.amenities.join(', '),
+      password: ''
     });
+    setPreviewImages(hotel.images);
+    setOpenDialog(true);
   };
 
-  // Cancel editing
-  const handleCancelEdit = () => {
-    setEditingHotel(null);
-    setForm({
-      name: "",
-      description: "",
-      location: "",
-      amenities: "",
-    });
+  const handleView = (hotel) => {
+    setSelectedHotel(hotel);
+    setOpenViewDialog(true);
   };
 
-  // Update hotel
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      await axios.put(
-        `http://localhost:5000/api/hotels/${editingHotel._id}`,
-        form
-      );
-      setMessage("Hotel updated successfully!");
-      setEditingHotel(null);
-      setForm({
-        name: "",
-        description: "",
-        location: "",
-        amenities: "",
-      });
-      fetchHotels();
-    } catch (error) {
-      console.error("Error updating hotel:", error);
-      setMessage("Error updating hotel");
-    } finally {
-      setLoading(false);
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this hotel?')) {
+      try {
+        const token = localStorage.getItem('adminToken');
+        await axios.delete(`${API_URL}/admin/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setSuccess('Hotel deleted successfully!');
+        fetchHotels();
+      } catch (err) {
+        setError(err.response?.data?.message || 'Delete failed');
+      }
     }
   };
 
-  // Delete hotel
-  const handleDelete = async (hotelId) => {
-    if (!window.confirm("Are you sure you want to delete this hotel?")) return;
-    try {
-      setLoading(true);
-      await axios.delete(`http://localhost:5000/api/hotels/${hotelId}`);
-      setMessage("Hotel deleted successfully!");
-      fetchHotels();
-    } catch (error) {
-      console.error("Error deleting hotel:", error);
-      setMessage("Error deleting hotel");
-    } finally {
-      setLoading(false);
-    }
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+      location: '',
+      email: '',
+      amenities: '',
+      password: ''
+    });
+    setImages([]);
+    setPreviewImages([]);
+    setSelectedHotel(null);
   };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    resetForm();
+  };
+
+  if (loading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4" component="h1">
           Hotel Management
-        </h1>
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<Add />}
+          onClick={() => setOpenDialog(true)}
+          sx={{ bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}
+        >
+          Add New Hotel
+        </Button>
+      </Box>
 
-        {message && (
-          <div
-            className={`mb-6 p-4 rounded-lg ${
-              message.includes("Error")
-                ? "bg-red-100 text-red-700"
-                : "bg-green-100 text-green-700"
-            }`}
-          >
-            {message}
-            <button
-              onClick={() => setMessage("")}
-              className="float-right font-bold"
-            >
-              ×
-            </button>
-          </div>
-        )}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
+          {error}
+        </Alert>
+      )}
 
-        {/* Edit Form */}
-        {editingHotel && (
-          <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">
-              Edit Hotel
-            </h2>
-            <form onSubmit={handleUpdate} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-700 mb-2">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess('')}>
+          {success}
+        </Alert>
+      )}
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ bgcolor: 'primary.light' }}>
+              <TableCell>Hotel</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Amenities</TableCell>
+              <TableCell>Rooms</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {hotels.map((hotel) => (
+              <TableRow key={hotel._id} hover>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    {hotel.images?.length > 0 ? (
+                      <Avatar
+                        src={hotel.images[0]}
+                        sx={{ width: 50, height: 50 }}
+                      />
+                    ) : (
+                      <Avatar sx={{ width: 50, height: 50 }}>
+                        <Hotel />
+                      </Avatar>
+                    )}
+                    <Box>
+                      <Typography variant="subtitle1">{hotel.name}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {hotel.description?.substring(0, 50)}...
+                      </Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocationOn fontSize="small" color="action" />
+                    {hotel.location}
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Email fontSize="small" color="action" />
+                    {hotel.email}
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {hotel.amenities?.slice(0, 3).map((amenity, index) => (
+                      <Chip key={index} label={amenity} size="small" />
+                    ))}
+                    {hotel.amenities?.length > 3 && (
+                      <Chip label={`+${hotel.amenities.length - 3}`} size="small" />
+                    )}
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Chip 
+                    label={`${hotel.rooms?.length || 0} Rooms`} 
+                    color="primary" 
+                    variant="outlined" 
                   />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">Location</label>
-                  <input
-                    type="text"
-                    name="location"
-                    value={form.location}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  />
-                </div>
-              </div>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleView(hotel)}
+                      color="info"
+                    >
+                      <Visibility />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleEdit(hotel)}
+                      color="primary"
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(hotel._id)}
+                      color="error"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-              <div>
-                <label className="block text-gray-700 mb-2">Description</label>
-                <textarea
+      {/* Add/Edit Hotel Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+        <DialogTitle>
+          {selectedHotel ? 'Edit Hotel' : 'Add New Hotel'}
+        </DialogTitle>
+        <form onSubmit={handleSubmit}>
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Hotel Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Description"
                   name="description"
-                  value={form.description}
-                  onChange={handleChange}
-                  rows="3"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  multiline
+                  rows={3}
+                  margin="normal"
                 />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-2">
-                  Amenities (comma separated)
-                </label>
-                <input
-                  type="text"
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  required
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Amenities (comma separated)"
                   name="amenities"
-                  value={form.amenities}
-                  onChange={handleChange}
-                  placeholder="WiFi, Pool, Spa, Gym"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  value={formData.amenities}
+                  onChange={handleInputChange}
+                  placeholder="WiFi, Parking, Pool, etc."
+                  margin="normal"
                 />
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
+              </Grid>
+              {!selectedHotel && (
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    required
+                    margin="normal"
+                  />
+                </Grid>
+              )}
+              <Grid item xs={12}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  startIcon={<Add />}
+                  sx={{ mt: 2 }}
                 >
-                  {loading ? "Updating..." : "Update Hotel"}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
+                  Upload Images
+                  <input
+                    type="file"
+                    hidden
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </Button>
+                {previewImages.length > 0 && (
+                  <Box sx={{ display: 'flex', gap: 1, mt: 2, flexWrap: 'wrap' }}>
+                    {previewImages.map((src, index) => (
+                      <Avatar
+                        key={index}
+                        src={src}
+                        sx={{ width: 80, height: 80 }}
+                        variant="rounded"
+                      />
+                    ))}
+                  </Box>
+                )}
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button type="submit" variant="contained">
+              {selectedHotel ? 'Update' : 'Add'} Hotel
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
 
-        {/* Hotels List */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="px-6 py-4 border-b">
-            <h2 className="text-xl font-semibold text-gray-800">
-              All Hotels ({hotels.length})
-            </h2>
-          </div>
-
-          {loading && !editingHotel ? (
-            <div className="p-8 text-center">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-              <p className="mt-2 text-gray-600">Loading hotels...</p>
-            </div>
-          ) : hotels.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
-              No hotels found. Add some hotels to get started.
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Hotel
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Location
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Amenities
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {hotels.map((hotel) => (
-                    <tr key={hotel._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {hotel.images && hotel.images.length > 0 && (
-                            <img
-                              src={hotel.images[0]}
-                              alt={hotel.name}
-                              className="h-10 w-10 rounded-lg object-cover mr-3"
-                            />
-                          )}
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {hotel.name}
-                            </div>
-                            <div className="text-sm text-gray-500 line-clamp-1">
-                              {hotel.description}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {hotel.location}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        <div className="flex flex-wrap gap-1">
-                          {hotel.amenities.slice(0, 3).map((amenity, index) => (
-                            <span
-                              key={index}
-                              className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"
-                            >
-                              {amenity}
-                            </span>
-                          ))}
-                          {hotel.amenities.length > 3 && (
-                            <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                              +{hotel.amenities.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleEdit(hotel)}
-                            className="text-blue-600 hover:text-blue-900 transition"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(hotel._id)}
-                            className="text-red-600 hover:text-red-900 transition"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+      {/* View Hotel Dialog */}
+      <Dialog open={openViewDialog} onClose={() => setOpenViewDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            Hotel Details
+            <IconButton onClick={() => setOpenViewDialog(false)}>
+              <Close />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          {selectedHotel && (
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Typography variant="h5" gutterBottom>
+                  {selectedHotel.name}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" paragraph>
+                  {selectedHotel.description}
+                </Typography>
+              </Grid>
+              
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                  <LocationOn color="action" />
+                  <Typography variant="subtitle1">Location:</Typography>
+                </Box>
+                <Typography variant="body1">{selectedHotel.location}</Typography>
+              </Grid>
+              
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                  <Email color="action" />
+                  <Typography variant="subtitle1">Email:</Typography>
+                </Box>
+                <Typography variant="body1">{selectedHotel.email}</Typography>
+              </Grid>
+              
+              <Grid item xs={12}>
+                <Typography variant="subtitle1" gutterBottom>Amenities:</Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  {selectedHotel.amenities?.map((amenity, index) => (
+                    <Chip key={index} label={amenity} color="primary" variant="outlined" />
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </Box>
+              </Grid>
+              
+              <Grid item xs={12}>
+                <Typography variant="subtitle1" gutterBottom>Images:</Typography>
+                <Grid container spacing={2}>
+                  {selectedHotel.images?.map((image, index) => (
+                    <Grid item xs={6} md={4} key={index}>
+                      <Card>
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={image}
+                          alt={`Hotel image ${index + 1}`}
+                        />
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+              
+              <Grid item xs={12}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Rooms: {selectedHotel.rooms?.length || 0}
+                </Typography>
+                {selectedHotel.rooms?.length > 0 ? (
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Room Name</TableCell>
+                          <TableCell>Type</TableCell>
+                          <TableCell>Price</TableCell>
+                          <TableCell>Available</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {selectedHotel.rooms.map((room, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{room.name}</TableCell>
+                            <TableCell>{room.type}</TableCell>
+                            <TableCell>${room.price}</TableCell>
+                            <TableCell>
+                              <Chip
+                                label={room.available ? 'Available' : 'Booked'}
+                                color={room.available ? 'success' : 'error'}
+                                size="small"
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    No rooms added yet.
+                  </Typography>
+                )}
+              </Grid>
+            </Grid>
           )}
-        </div>
-      </div>
-    </div>
+        </DialogContent>
+      </Dialog>
+    </Container>
   );
-}
+};
 
+export default AdminHotelManage;

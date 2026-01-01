@@ -13,6 +13,13 @@ const bookingSchema = new mongoose.Schema({
   customerPhone: { type: String, required: true },
   totalAmount: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now },
+
+  
 });
+
+
+/////////////////////////////////////////
+
+
 
 export default mongoose.model("Booking", bookingSchema);

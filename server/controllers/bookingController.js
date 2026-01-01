@@ -1,4 +1,6 @@
 import Booking from "../models/Booking.js";
+///////////////////////////////////////////
+import PDFDocument from "pdfkit";
 
 // ✅ Create a new booking
 export const createBooking = async (req, res) => {
@@ -70,4 +72,64 @@ export const deleteBooking = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error deleting booking", error: error.message });
   }
+};
+///////////////////////////////////////////////////
+
+// ✅ Update booking (partial update, no validation error)
+export const updateBooking = async (req, res) => {
+  try {
+    console.log("UPDATE HIT", req.params.id, req.body); // Debug log
+
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },   // Only update fields sent from frontend
+      { new: true, runValidators: false } // Avoid required fields validation
+    );
+
+    if (!updatedBooking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    res.status(200).json(updatedBooking);
+  } catch (error) {
+    console.error("UPDATE ERROR:", error);
+    res.status(500).json({
+      message: "Failed to update booking",
+      error: error.message,
+    });
+  }
+};
+
+/////////////////////////////////////////////
+
+export const generateInvoice = async (req, res) => {
+  const booking = await Booking.findById(req.params.id).populate("user");
+
+  if (!booking) return res.status(404).json({ message: "Booking not found" });
+
+  const doc = new PDFDocument();
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+
+  doc.pipe(res);
+
+  doc.fontSize(22).text("Hotel Booking Invoice", { align: "center" });
+  doc.moveDown();
+
+  doc.fontSize(14).text(`Booking ID: ${booking._id}`);
+  doc.text(`Customer: ${booking.customerName}`);
+  doc.text(`Email: ${booking.customerEmail}`);
+  doc.moveDown();
+
+  doc.text(`Hotel: ${booking.hotelName}`);
+  doc.text(`Room: ${booking.roomName} (${booking.roomType})`);
+  doc.text(`Check-in: ${booking.checkIn.toDateString()}`);
+  doc.text(`Check-out: ${booking.checkOut.toDateString()}`);
+  doc.moveDown();
+
+  doc.fontSize(16).text(`Total Amount: Rs. ${booking.totalAmount}`, {
+    align: "right",
+  });
+
+  doc.end();
 };
