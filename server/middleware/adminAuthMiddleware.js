@@ -147,32 +147,62 @@
 
 ///////////////////////////////////////////////////////////
 
+// import jwt from "jsonwebtoken";
+// import Admin from "../models/Admin.js";
+
+// export const protectAdmin = async (req, res, next) => {
+//   try {
+//     const auth = req.headers.authorization;
+
+//     if (!auth || !auth.startsWith("Bearer ")) {
+//       return res.status(401).json({ message: "No token" });
+//     }
+
+//     const token = auth.split(" ")[1];
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//     req.admin = await Admin.findById(decoded.id).select("-password");
+//     next();
+//   } catch {
+//     res.status(401).json({ message: "Not authorized, token failed" });
+//   }
+// };
+
+// export const authorizeRoles = (...roles) => {
+//   return (req, res, next) => {
+//     if (!roles.includes(req.admin.role)) {
+//       return res.status(403).json({ message: "Access denied" });
+//     }
+//     next();
+//   };
+// };
+
+
+////////////////////////////////////////////////////
+
 import jwt from "jsonwebtoken";
 import Admin from "../models/Admin.js";
 
 export const protectAdmin = async (req, res, next) => {
   try {
-    const auth = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!auth || !auth.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "No token" });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
     }
 
-    const token = auth.split(" ")[1];
+    const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.admin = await Admin.findById(decoded.id).select("-password");
+    const admin = await Admin.findById(decoded.id).select("-password");
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not found" });
+    }
+
+    req.admin = admin;
     next();
-  } catch {
-    res.status(401).json({ message: "Not authorized, token failed" });
+  } catch (err) {
+    res.status(401).json({ message: "Token invalid" });
   }
 };
 
-export const authorizeRoles = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.admin.role)) {
-      return res.status(403).json({ message: "Access denied" });
-    }
-    next();
-  };
-};

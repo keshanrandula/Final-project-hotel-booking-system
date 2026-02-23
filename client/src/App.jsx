@@ -31,6 +31,8 @@ import check from "./check";
 import Feedback from "./Feedback";
 import AdminManageFeedback from "./Admin/AdminManageFeedback";
 import MyBookings from "./MyBookings";
+import AdminBookingManagement from "./Admin/AdminBookingManagement"; 
+import HotelBookingManagement from "./hotelstaff/HotelBookingManagement";   
   
 
 
@@ -75,6 +77,8 @@ function App() {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/admin/managefeedback" element={<AdminManageFeedback />} />
           <Route path="/mybookings" element={<MyBookings />} />
+          <Route path="/admin/bookingmanagement" element={<AdminBookingManagement />} />
+          <Route path="/hotel/bookingmanagement" element={<HotelBookingManagement />} />
  
        
         

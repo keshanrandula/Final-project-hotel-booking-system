@@ -211,81 +211,94 @@
 import { useState } from "react";
 import axios from "axios";
 
-const AdminRegister = () => {
+export default function AdminRegister() {
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: "admin",
   });
-
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     try {
-      const token = localStorage.getItem("adminToken");
-
-      console.log("REGISTER TOKEN:", token); // DEBUG
-
       const res = await axios.post(
         "http://localhost:5000/api/admin/register",
-        form,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // ✅ MUST
-            "Content-Type": "application/json",
-          },
-        }
+        form
       );
 
-      setSuccess(res.data.message);
-      setError("");
+      if (res.data.token) {
+        localStorage.setItem("adminToken", res.data.token);
+        alert("Admin registered successfully");
+        window.location.href = "/admin/login";
+      }
     } catch (err) {
-      console.log("REGISTER ERROR:", err.response?.data);
-      setError(err.response?.data?.message || "Register failed");
-      setSuccess("");
+      setError(err.response?.data?.message || "Admin registration failed");
     }
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Register Admin</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Admin Registration
+        </h2>
 
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <p className="bg-red-100 text-red-700 p-2 rounded mb-4 text-center">
+            {error}
+          </p>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Name"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        /><br /><br />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Admin Name"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        /><br /><br />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        /><br /><br />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+            required
+          />
 
-        <select
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-        >
-          <option value="admin">Admin</option>
-          <option value="moderator">Moderator</option>
-        </select><br /><br />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          >
+            Register
+          </button>
+        </form>
 
-        <button type="submit">Register</button>
-      </form>
+        <p className="text-center mt-4 text-sm">
+          Already have an admin account?{" "}
+          <a href="/admin/login" className="text-blue-600 font-semibold">
+            Login
+          </a>
+        </p>
+      </div>
     </div>
   );
-};
-
-export default AdminRegister;
-
+}

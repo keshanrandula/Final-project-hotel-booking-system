@@ -207,30 +207,84 @@
 // export default AdminLogin;
 
 ////////////////////////////////////////////////////////////
-
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
 
-  const login = async () => {
-    const res = await axios.post(
-      "http://localhost:5000/api/admin/login",
-      { email, password }
-    );
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    localStorage.setItem("adminToken", res.data.token);
-    alert("Login success");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/admin/login",
+        form
+      );
+
+      if (res.data.token) {
+        localStorage.setItem("adminToken", res.data.token);
+        window.location.href = "/admin/dashboard";
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
-    <>
-      <input placeholder="Email" onChange={e=>setEmail(e.target.value)} />
-      <input placeholder="Password" type="password" onChange={e=>setPassword(e.target.value)} />
-      <button onClick={login}>Login</button>
-    </>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6">Admin Login</h2>
+
+        {error && (
+          <p className="bg-red-100 text-red-700 p-2 rounded mb-4 text-center">
+            {error}
+          </p>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            onChange={handleChange}
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="text-center mt-4 text-sm">
+          Don’t have an admin account?{" "}
+          <a href="/admin/register" className="text-blue-600 font-semibold">
+            Register
+          </a>
+        </p>
+      </div>
+    </div>
   );
 }
-
