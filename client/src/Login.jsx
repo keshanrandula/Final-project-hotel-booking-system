@@ -1,143 +1,87 @@
-// // import React, { useState } from "react";
-// // import axios from "axios";
-// // import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-// // export default function UserLogin() {
-// //   const [form, setForm] = useState({
-// //     email: "",
-// //     password: ""
-// //   });
-// //   const [showPassword, setShowPassword] = useState(false);
-// //   const [loading, setLoading] = useState(false);
-// //   const [message, setMessage] = useState({ type: "", text: "" });
 
-// //   const handleChange = (e) => {
-// //     setForm({ ...form, [e.target.name]: e.target.value });
-// //   };
+// import { useState } from "react";
+// import axios from "axios";
 
-// //   const handleSubmit = async (e) => {
-// //     e.preventDefault();
-// //     setLoading(true);
-// //     setMessage({ type: "", text: "" });
+// export default function Login() {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [error, setError] = useState("");
 
-// //     try {
-// //       const res = await axios.post("http://localhost:5000/api/users/login", form);
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     setError("");
 
-// //       // Save token & user info
-// //       localStorage.setItem("userToken", res.data.token);
-// //       localStorage.setItem("userInfo", JSON.stringify(res.data.user));
+//     try {
+//       const res = await axios.post("http://localhost:5000/api/auth/login", {
+//         email,
+//         password,
+//       });
 
-// //       setMessage({
-// //         type: "success",
-// //         text: "Login successful! Redirecting..."
-// //       });
+//       if (res.data.success) {
+//         localStorage.setItem("token", res.data.token);
+//         localStorage.setItem("user", JSON.stringify(res.data.user));
 
-// //       // Redirect to dashboard
-// //       setTimeout(() => {
-// //         window.location.href = "/dashboard";
-// //       }, 1500);
+//         alert("Login Successful!");
+//         window.location.href = "/profile";
+//       }
+//     } catch (err) {
+//       setError(err.response?.data?.message || "Login failed");
+//     }
+//   };
 
-// //     } catch (err) {
-// //       setMessage({
-// //         type: "error",
-// //         text: err.response?.data?.message || "Login failed"
-// //       });
-// //     } finally {
-// //       setLoading(false);
-// //     }
-// //   };
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+//       <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
+//         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
-// //   return (
-// //     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-8 px-4">
-// //       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-// //         <div className="text-center mb-8">
-// //           <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-// //           <p className="text-gray-600 mt-2">Sign in to your account</p>
-// //         </div>
+//         {error && <p className="text-red-600 mb-3">{error}</p>}
 
-// //         {message.text && (
-// //           <div className={`mb-6 p-4 rounded-lg ${
-// //             message.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-// //           }`}>
-// //             {message.text}
-// //           </div>
-// //         )}
+//         <form onSubmit={handleLogin} className="space-y-4">
+//           <input
+//             type="email"
+//             className="w-full p-3 border rounded-lg"
+//             placeholder="Email"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             required
+//           />
 
-// //         <form onSubmit={handleSubmit} className="space-y-6">
-// //           <div>
-// //             <label className="block text-sm font-medium text-gray-700 mb-1">
-// //               Email Address
-// //             </label>
-// //             <input
-// //               type="email"
-// //               name="email"
-// //               value={form.email}
-// //               onChange={handleChange}
-// //               required
-// //               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-// //               placeholder="john@example.com"
-// //             />
-// //           </div>
+//           <input
+//             type="password"
+//             className="w-full p-3 border rounded-lg"
+//             placeholder="Password"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
+//             required
+//           />
 
-// //           <div>
-// //             <label className="block text-sm font-medium text-gray-700 mb-1">
-// //               Password
-// //             </label>
-// //             <div className="relative">
-// //               <input
-// //                 type={showPassword ? "text" : "password"}
-// //                 name="password"
-// //                 value={form.password}
-// //                 onChange={handleChange}
-// //                 required
-// //                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12"
-// //                 placeholder="••••••••"
-// //               />
-// //               <button
-// //                 type="button"
-// //                 onClick={() => setShowPassword(!showPassword)}
-// //                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-// //               >
-// //                 {showPassword ? (
-// //                   <EyeSlashIcon className="h-5 w-5" />
-// //                 ) : (
-// //                   <EyeIcon className="h-5 w-5" />
-// //                 )}
-// //               </button>
-// //             </div>
-// //           </div>
+//           <button
+//             type="submit"
+//             className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
+//           >
+//             Login
+//           </button>
+//         </form>
 
-// //           <button
-// //             type="submit"
-// //             disabled={loading}
-// //             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-// //           >
-// //             {loading ? (
-// //               <div className="flex items-center justify-center">
-// //                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-// //                 Signing In...
-// //               </div>
-// //             ) : (
-// //               "Sign In"
-// //             )}
-// //           </button>
-// //         </form>
+//         <p className="text-center mt-4">
+//           Don’t have an account?{" "}
+//           <a href="/register" className="text-blue-600 font-semibold">
+//             Register
+//           </a>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// }
 
-// //         <p className="text-center text-gray-600 mt-6">
-// //           Don't have an account?{" "}
-// //           <a href="/register" className="text-blue-600 hover:text-blue-700 font-medium">
-// //             Create account
-// //           </a>
-// //         </p>
-// //       </div>
-// //     </div>
-// //   );
-// // }
 
-// ////////////////////////////
+// ///////////////////////////////////////////////////////////
 
 import { useState } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -158,25 +102,62 @@ export default function Login() {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
+        // ✅ Toast success
+        toast.success("Login Successful! Welcome to ParadiseLankaStay!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+
+        // keep your alert too (content unchanged)
         alert("Login Successful!");
-        window.location.href = "/profile";
+
+        setTimeout(() => {
+          window.location.href = "/profile";
+        }, 800);
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      const msg = err.response?.data?.message || "Login failed";
+      setError(msg);
+
+      // ✅ Toast error
+      toast.error(msg, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+      });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 p-4">
+      <ToastContainer />
 
-        {error && <p className="text-red-600 mb-3">{error}</p>}
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-blue-100">
+        {/* ✅ Added inside container */}
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-semibold text-gray-800">
+            Welcome to <span className="text-blue-600">ParadiseLanka</span>Stay
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">Sign in to continue</p>
+        </div>
+
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
+
+        {error && (
+          <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm text-center">{error}</p>
+          </div>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -185,7 +166,7 @@ export default function Login() {
 
           <input
             type="password"
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -194,15 +175,15 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-semibold"
           >
             Login
           </button>
         </form>
 
-        <p className="text-center mt-4">
+        <p className="text-center mt-4 text-gray-600">
           Don’t have an account?{" "}
-          <a href="/register" className="text-blue-600 font-semibold">
+          <a href="/register" className="text-blue-600 font-semibold hover:underline">
             Register
           </a>
         </p>
@@ -212,5 +193,4 @@ export default function Login() {
 }
 
 
-///////////////////////////////////////////////////////////
 

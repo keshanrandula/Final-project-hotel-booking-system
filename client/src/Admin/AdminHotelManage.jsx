@@ -180,7 +180,7 @@ export default function AdminHotelManage() {
               </button>
               <button
                 onClick={updateHotel}
-                className="px-4 py-1 bg-green-500 text-white rounded"
+                className="px-4 py-1 bg-blue-500 text-white rounded"
               >
                 Update
               </button>

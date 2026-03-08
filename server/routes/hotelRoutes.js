@@ -305,13 +305,13 @@ import { protectAdmin } from "../middleware/adminAuthMiddleware.js";
 
 const router = express.Router();
 
-/* ===================== PUBLIC ROUTES ===================== */
+
 router.post("/add", upload.array("images", 5), addHotel);
 router.post("/login", loginHotel);
 router.get("/", getHotels);
-router.get("/:id", getHotelById); // ✅ Public access to view hotel details
+router.get("/:id", getHotelById); 
 
-/* ===================== HOTEL-OWNER PROTECTED ROUTES ===================== */
+/* HOTEL-OWNER PROTECTED ROUTES  */
 router.put("/:id/update", protectHotel, upload.array("images", 5), updateHotel);
 router.delete("/:id/delete", protectHotel, deleteHotel);
 router.post("/:id/rooms", protectHotel, upload.array("images", 5), addRoom);

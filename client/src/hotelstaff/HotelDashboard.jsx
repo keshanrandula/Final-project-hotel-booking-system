@@ -545,7 +545,7 @@ export default function HotelDashboard() {
           <div className="flex justify-between items-center h-16">
             {/* Logo/Brand */}
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">HotelHub</h1>
+              <h1 className="text-2xl font-bold text-gray-900">ParadiseLankaStay</h1>
               <span className="ml-4 text-sm text-gray-500">Dashboard</span>
             </div>
 

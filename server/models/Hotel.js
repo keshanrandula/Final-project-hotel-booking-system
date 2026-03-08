@@ -1,5 +1,8 @@
 
 
+
+
+
 import mongoose from "mongoose";
 
 const roomSchema = new mongoose.Schema({
@@ -9,7 +12,7 @@ const roomSchema = new mongoose.Schema({
   available: { type: Boolean, default: true },
   description: String,
   images: [String],
-}, { timestamps: true }); // Added timestamps for better tracking
+}, { timestamps: true }); 
 
 const hotelSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -20,7 +23,15 @@ const hotelSchema = new mongoose.Schema({
   rating: { type: Number, default: 0 },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+
+  
+  
+  ownerName: { type: String },        // Owner's full name
+  ownerPhone: { type: String },       // Owner's contact number
+  hotelPhone: { type: String },
   rooms: [roomSchema],
 }, { timestamps: true });
+
+
 
 export default mongoose.model("Hotel", hotelSchema);

@@ -4,33 +4,32 @@ import express from "express";
 import {
   createBooking,
   getAllBookings,
-  getBookingById,  // Added missing method
+  getBookingById, 
   updateBooking,
   generateInvoice,
-  deleteBooking, ////////////////////
+  deleteBooking, 
 } from "../controllers/bookingController.js";
 
 const router = express.Router();
 
-// POST /api/bookings - Create a booking
+// POST /api/bookings 
 router.post("/", createBooking);
 
-// GET /api/bookings - Get all bookings
+// GET /api/booking
 router.get("/", getAllBookings);
 
-// GET /api/bookings/:id - Get a single booking by ID
-router.get("/:id", getBookingById);  // Added missing method
-
-// PUT /api/bookings/:id - Update booking (e.g., mark as paid)
+// GET /api/bookings/:id
+router.get("/:id", getBookingById);  
+// PUT /api/bookings/:id 
 router.put("/:id", updateBooking);
 
-// GET /api/bookings/:id/invoice - Generate invoice for booking
+// GET /api/bookings/:id/invoice 
 router.get("/:id/invoice", generateInvoice);
 
-// DELETE /api/bookings/:id - Delete booking (ADD THIS)
+// DELETE /api/bookings/:id 
 router.delete("/:id", deleteBooking);
 
-//////////////////////////////////////////
+
 
 
 

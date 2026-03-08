@@ -33,6 +33,10 @@ import AdminManageFeedback from "./Admin/AdminManageFeedback";
 import MyBookings from "./MyBookings";
 import AdminBookingManagement from "./Admin/AdminBookingManagement"; 
 import HotelBookingManagement from "./hotelstaff/HotelBookingManagement";   
+import HotelDetails from "./HotelDetails";
+import PaymentPage from "./Payment";
+import HotelRegister from "./hotelstaff/HotelRegister";
+import AdminProfile from "./Admin/AdminProfie"; 
   
 
 
@@ -79,6 +83,12 @@ function App() {
           <Route path="/mybookings" element={<MyBookings />} />
           <Route path="/admin/bookingmanagement" element={<AdminBookingManagement />} />
           <Route path="/hotel/bookingmanagement" element={<HotelBookingManagement />} />
+             
+               <Route path="/hotel/:id" element={<HotelDetails />} />
+               <Route path="/payment/:bookingId" element={<PaymentPage />} />
+                <Route path="/hotelregister" element={<HotelRegister />} />
+                <Route path="/admin/profile" element={<AdminProfile />} />
+ 
  
        
         

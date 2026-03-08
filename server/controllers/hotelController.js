@@ -1,13 +1,15 @@
 
+
+
 import mongoose from "mongoose";
 import Hotel from "../models/Hotel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-/* ===================== REGISTER HOTEL ===================== */
+//hotel  registrations
 export const addHotel = async (req, res) => {
   try {
-    const { name, description, location, amenities, email, password } = req.body;
+    const { name, description, location, amenities, email, password, ownerName, ownerPhone, hotelPhone  } = req.body;
 
     const exists = await Hotel.findOne({ email });
     if (exists) {
@@ -28,6 +30,9 @@ export const addHotel = async (req, res) => {
       email,
       password: hashedPassword,
       images: imagePaths,
+      ownerName: ownerName || null,
+      ownerPhone: ownerPhone || null,
+      hotelPhone: hotelPhone || null,
     });
 
     res.status(201).json({ message: "Hotel registered", hotel });
@@ -66,17 +71,62 @@ export const getHotelById = async (req, res) => {
   res.json(hotel);
 };
 
-/* ===================== UPDATE HOTEL ===================== */
-/* UPDATE HOTEL */
+// /* ===================== UPDATE HOTEL ===================== */
+// /* UPDATE HOTEL */
+// export const updateHotel = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const updatedHotel = await Hotel.findByIdAndUpdate(
+//       id,
+//       req.body,
+//       { new: true }
+//     );
+
+//     if (!updatedHotel) {
+//       return res.status(404).json({ message: "Hotel not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "Hotel updated successfully",
+//       hotel: updatedHotel,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Hotel update failed" });
+//   }
+// };
+//////////////////////////////////////////////////////////
 export const updateHotel = async (req, res) => {
   try {
     const { id } = req.params;
+    const updateData = { ...req.body };
+
+    // If password is being updated, hash it
+    if (updateData.password) {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
+    }
+
+    // Handle amenities if provided
+    if (updateData.amenities && typeof updateData.amenities === 'string') {
+      updateData.amenities = updateData.amenities.split(',').map(item => item.trim());
+    }
+
+    // Handle images if new ones are uploaded
+    if (req.files && req.files.length > 0) {
+      const imagePaths = req.files.map(
+        (file) => `${req.protocol}://${req.get("host")}/uploads/${file.filename}`
+      );
+      
+      // Get existing hotel to merge images
+      const existingHotel = await Hotel.findById(id);
+      updateData.images = [...(existingHotel?.images || []), ...imagePaths];
+    }
 
     const updatedHotel = await Hotel.findByIdAndUpdate(
       id,
-      req.body,
-      { new: true }
-    );
+      updateData,
+      { new: true, runValidators: true }
+    ).select("-password");
 
     if (!updatedHotel) {
       return res.status(404).json({ message: "Hotel not found" });
@@ -87,7 +137,8 @@ export const updateHotel = async (req, res) => {
       hotel: updatedHotel,
     });
   } catch (error) {
-    res.status(500).json({ message: "Hotel update failed" });
+    console.error("Update error:", error);
+    res.status(500).json({ message: "Hotel update failed", error: error.message });
   }
 };
 

@@ -15,7 +15,7 @@ export const protectHotel = async (req, res, next) => {
     const hotel = await Hotel.findById(decoded.id).select("-password");
     if (!hotel) return res.status(404).json({ message: "Hotel not found" });
 
-    req.hotel = hotel; // ✅ set hotel for next
+    req.hotel = hotel; 
     next();
   } catch (err) {
     console.error(err);
