@@ -37,15 +37,15 @@ export default function Contact() {
 
           <div className="space-y-4">
             <p>
-              <strong className="text-blue-600">📞 Phone:</strong>{" "}
+              <strong className="text-blue-600"> Phone:</strong>{" "}
               +94 77 123 4567
             </p>
             <p>
-              <strong className="text-blue-600">📧 Email:</strong>{" "}
+              <strong className="text-blue-600"> Email:</strong>{" "}
               support@hoteleese.com
             </p>
             <p>
-              <strong className="text-blue-600">📍 Address:</strong>{" "}
+              <strong className="text-blue-600"> Address:</strong>{" "}
               Colombo, Sri Lanka
             </p>
           </div>
