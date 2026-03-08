@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 py-12 mt-16">
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-3xl font-semibold text-white">HotelEase</h2>
+        <h2 className="text-3xl font-semibold text-white">paradiseLankaStay</h2>
         <p className="mt-2 text-gray-400">Your comfort is our priority.</p>
 
         <div className="mt-6 flex justify-center space-x-8">
