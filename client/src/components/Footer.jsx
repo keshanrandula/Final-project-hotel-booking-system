@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
 
         <p className="mt-8 text-gray-500 text-sm">
-          © {new Date().getFullYear()} HotelEase. All Rights Reserved.
+          © {new Date().getFullYear()} paradiseLankaStay. All Rights Reserved.
         </p>
       </div>
     </footer>
