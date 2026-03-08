@@ -1,28 +1,4 @@
-// export default function Footer() {
-//   return (
-//     <footer className="bg-gray-900 text-gray-300 py-8 mt-10">
-//       <div className="max-w-7xl mx-auto px-6 text-center">
 
-//         <h2 className="text-xl font-semibold">HotelBooking</h2>
-//         <p className="mt-2">Your comfort is our priority.</p>
-
-//         <div className="mt-4 flex justify-center space-x-6">
-//           <a href="/" className="hover:text-white">Home</a>
-//           <a href="/hotels" className="hover:text-white">Hotels</a>
-//           <a href="/about" className="hover:text-white">About</a>
-//           <a href="/contact" className="hover:text-white">Contact</a>
-//         </div>
-
-//         <p className="mt-6 text-gray-500 text-sm">
-//           © {new Date().getFullYear()} HotelBooking. All Rights Reserved.
-//         </p>
-
-//       </div>
-//     </footer>
-//   );
-// }
-
-////////////////////////////////////////////////
 
 export default function Footer() {
   return (
