@@ -13,11 +13,7 @@ import { protectAdmin } from "../middleware/adminAuthMiddleware.js";
 
 const router = express.Router();
 
-/**
- * =====================
- * PUBLIC ROUTES
- * =====================
- */
+
 
 // Admin login
 router.post("/login", loginAdmin);
