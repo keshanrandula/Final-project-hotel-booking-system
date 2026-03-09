@@ -37,6 +37,7 @@ import HotelDetails from "./HotelDetails";
 import PaymentPage from "./Payment";
 import HotelRegister from "./hotelstaff/HotelRegister";
 import AdminProfile from "./Admin/AdminProfie"; 
+import HotelReviews from "./hotelstaff/HotelReviews";
   
 
 
@@ -88,6 +89,7 @@ function App() {
                <Route path="/payment/:bookingId" element={<PaymentPage />} />
                 <Route path="/hotelregister" element={<HotelRegister />} />
                 <Route path="/admin/profile" element={<AdminProfile />} />
+                <Route path="/hotelreviews" element={<HotelReviews />} />
  
  
        
