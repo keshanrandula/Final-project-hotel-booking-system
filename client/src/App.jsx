@@ -38,6 +38,7 @@ import PaymentPage from "./Payment";
 import HotelRegister from "./hotelstaff/HotelRegister";
 import AdminProfile from "./Admin/AdminProfie"; 
 import HotelReviews from "./hotelstaff/HotelReviews";
+import AdminUserManagement from "./Admin/AdminUserManagement";
   
 
 
@@ -71,6 +72,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
           <Route path="/admin/roommanage" element={<AdminRoomManage />} />
 
+
         <Route path="/admin/register" element={<AdminRegister />} />
         <Route path="/admin/login" element={<AdminLogin />} />  
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -90,6 +92,7 @@ function App() {
                 <Route path="/hotelregister" element={<HotelRegister />} />
                 <Route path="/admin/profile" element={<AdminProfile />} />
                 <Route path="/hotelreviews" element={<HotelReviews />} />
+                <Route path="/admin/usermanagement" element={<AdminUserManagement />} />
  
  
        

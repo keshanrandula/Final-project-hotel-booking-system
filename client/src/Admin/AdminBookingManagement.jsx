@@ -1255,7 +1255,7 @@ export default function AdminBookingManagement() {
       const tax = 0;
       const total = subtotal + tax;
 
-      // Create invoice HTML - සම්පූර්ණයෙන්ම White Background
+      // Create invoice HTML -  White Background
       const invoiceHTML = `
         <!DOCTYPE html>
         <html lang="en">
@@ -2046,7 +2046,7 @@ export default function AdminBookingManagement() {
           )}
         </div>
 
-        {/* Details Modal - සම්පූර්ණයෙන්ම White Background */}
+        {/* Details Modal - White Background */}
         {showDetailsModal && selectedBooking && (
           <div className="fixed inset-0 bg-white bg-opacity-95 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">

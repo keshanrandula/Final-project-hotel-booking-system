@@ -40,6 +40,11 @@ router.post("/logout", protectAdmin, logoutAdmin);
 router.put("/profile", protectAdmin, updateAdminProfile); // New route for updating profile
 
 
+
+
+
+
+
 export default router;
 
 
